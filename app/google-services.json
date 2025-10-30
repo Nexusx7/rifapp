@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "476717395927",
+    "project_id": "rifaapp-7304f",
+    "storage_bucket": "rifaapp-7304f.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:476717395927:android:5f4c864934669ca107a592",
+        "android_client_info": {
+          "package_name": "com.auroratech.rifapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAAXLeNqlM81-VDbnTLOWNcQkdToUC_ZmE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
