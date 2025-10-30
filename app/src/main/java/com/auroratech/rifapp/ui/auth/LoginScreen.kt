@@ -9,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.auroratech.rifapp.R
@@ -28,6 +29,10 @@ fun LoginScreen(
     var errorMessage by remember { mutableStateOf<String?>(null) }
     var loading by remember { mutableStateOf(false) }
 
+    // 🔹 Detecta si el modo actual es claro u oscuro
+    val isLightTheme = MaterialTheme.colorScheme.background.luminance() > 0.5f
+    val textColor = if (isLightTheme) Color.Black else Color.White
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -46,30 +51,49 @@ fun LoginScreen(
 
         Text(
             text = "Iniciar sesión",
-            style = MaterialTheme.typography.headlineMedium
+            color = textColor,
+            style = MaterialTheme.typography.headlineMedium,
+            textAlign = TextAlign.Center
         )
 
         Spacer(Modifier.height(16.dp))
 
+        // 🔹 Campo correo
         OutlinedTextField(
             value = email,
             onValueChange = { email = it },
-            label = { Text("Correo electrónico") },
+            label = { Text("Correo electrónico", color = textColor) },
+            textStyle = LocalTextStyle.current.copy(color = textColor),
+            colors = TextFieldDefaults.outlinedTextFieldColors(
+                focusedBorderColor = textColor,
+                unfocusedBorderColor = textColor.copy(alpha = 0.5f),
+                cursorColor = textColor,
+                containerColor = Color.Transparent
+            ),
             modifier = Modifier.fillMaxWidth(),
             enabled = !loading
         )
 
+        // 🔹 Campo contraseña
         OutlinedTextField(
             value = password,
             onValueChange = { password = it },
-            label = { Text("Contraseña") },
+            label = { Text("Contraseña", color = textColor) },
+            textStyle = LocalTextStyle.current.copy(color = textColor),
             visualTransformation = PasswordVisualTransformation(),
+            colors = TextFieldDefaults.outlinedTextFieldColors(
+                focusedBorderColor = textColor,
+                unfocusedBorderColor = textColor.copy(alpha = 0.5f),
+                cursorColor = textColor,
+                containerColor = Color.Transparent
+            ),
             modifier = Modifier.fillMaxWidth(),
             enabled = !loading
         )
 
         Spacer(Modifier.height(16.dp))
 
+        // 🔹 Botón principal
         Button(
             onClick = {
                 if (email.isBlank() || password.isBlank()) {
@@ -106,26 +130,29 @@ fun LoginScreen(
 
         Spacer(Modifier.height(12.dp))
 
+        // 🔹 Botón para login con teléfono
         OutlinedButton(
             onClick = onPhoneLogin,
             modifier = Modifier.fillMaxWidth(),
             enabled = !loading
         ) {
-            Text("Iniciar con número de teléfono")
+            Text("Iniciar con número de teléfono", color = textColor)
         }
 
         Spacer(Modifier.height(12.dp))
 
+        // 🔹 Enlace para registrarse
         TextButton(
             onClick = onNavigateToRegister,
             enabled = !loading
         ) {
-            Text("¿No tienes cuenta? Regístrate aquí")
+            Text("¿No tienes cuenta? Regístrate aquí", color = textColor)
         }
 
+        // 🔹 Mensaje de error
         errorMessage?.let {
             Spacer(Modifier.height(8.dp))
-            Text(text = it, color = Color.Red)
+            Text(text = it, color = Color.Red, textAlign = TextAlign.Center)
         }
     }
 }
