@@ -17,15 +17,14 @@ fun BuyRaffleScreen(
     raffleId: String,
     raffleTitle: String
 ) {
-    val compra = mapOf(
-        "raffleId" to raffleId,
-        "raffleTitle" to raffleTitle,
-        "userId" to user.uid,
-        "userEmail" to user.email,
-        "selectedNumber" to selectedNumber,
-        "paid" to false, // 🔹 nuevo campo
-        "timestamp" to System.currentTimeMillis()
-    )
+    val firestore = FirebaseFirestore.getInstance()
+    val user = FirebaseAuth.getInstance().currentUser
+
+    // ✅ Variables de estado (deben estar dentro del Composable)
+    var selectedNumber by remember { mutableStateOf("") }
+    var message by remember { mutableStateOf("") }
+    var loading by remember { mutableStateOf(false) }
+
     Scaffold(
         topBar = {
             CenterAlignedTopAppBar(
@@ -44,6 +43,7 @@ fun BuyRaffleScreen(
             Text("Rifa: $raffleTitle", style = MaterialTheme.typography.titleLarge)
             Spacer(Modifier.height(16.dp))
 
+            // ✅ Campo para el número seleccionado
             OutlinedTextField(
                 value = selectedNumber,
                 onValueChange = { selectedNumber = it },
@@ -53,6 +53,7 @@ fun BuyRaffleScreen(
 
             Spacer(Modifier.height(24.dp))
 
+            // ✅ Botón para confirmar compra
             Button(
                 onClick = {
                     if (selectedNumber.isNotBlank() && user != null) {
@@ -63,6 +64,7 @@ fun BuyRaffleScreen(
                             "userId" to user.uid,
                             "userEmail" to user.email,
                             "selectedNumber" to selectedNumber,
+                            "paid" to false,
                             "timestamp" to System.currentTimeMillis()
                         )
 
@@ -87,7 +89,10 @@ fun BuyRaffleScreen(
             }
 
             Spacer(Modifier.height(16.dp))
-            if (message.isNotEmpty()) Text(message)
+
+            if (message.isNotEmpty()) {
+                Text(message)
+            }
         }
     }
 }
